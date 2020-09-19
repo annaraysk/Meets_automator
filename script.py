@@ -12,6 +12,7 @@ import datetime
 
 #my important variables
 class_time = 50*60
+end_class_before_how_many_seconds_of_next_class = 600
 cookie_file1 = "/home/array/Documents/cookie1.data"
 cookie_file2 = "/home/array/Documents/cookie2.data"
 week_days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -43,7 +44,7 @@ def attend_class(class_link):
     delta = datetime.timedelta(hours=1)
     now = datetime.datetime.now()
     next_hour = (now + delta).replace(microsecond=0, second=0, minute=2)
-    class_time = (next_hour - now).seconds - 600
+    class_time = (next_hour - now).seconds - end_class_before_how_many_seconds_of_next_class
     if class_time<0:
         class_time=1  
     sleep(class_time)
@@ -91,5 +92,5 @@ if args.timetable:
             temp.append(subject_list[tt[i][j]])
         ttlist.append(temp)
     print(tabulate(ttlist,[" ","9 - 10","10 - 11","11 - 12","12 - 1"],"fancy_grid"))
-    
+
         
