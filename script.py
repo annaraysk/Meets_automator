@@ -93,4 +93,17 @@ if args.timetable:
         ttlist.append(temp)
     print(tabulate(ttlist,[" ","9 - 10","10 - 11","11 - 12","12 - 1"],"fancy_grid"))
 
-        
+if args.auto:
+    present_time = datetime.datetime.now()
+    present_day = present_time.weekday()
+    while True:
+        if present_day not in [0,1,2,3,4]:
+            print("\n\nNot a good day to attend classes.\n")
+            break
+        if (present_time.hour < 9 or present_time > 12) :
+            print("\n\nNo classes to attend now.\n")
+            break
+        index_of_class = tt[present_day][present_time.hour - 9]
+        class_to_attend = dictionary_of_links[subject_list[index_of_class]]
+        attend_class(class_to_attend)
+        sleep(end_class_before_how_many_seconds_of_next_class + 300)
