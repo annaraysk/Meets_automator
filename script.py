@@ -9,6 +9,7 @@ from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 
 #my important variables
+class_time = 50*60
 cookie_file1 = "/home/array/Documents/cookie1.data"
 cookie_file2 = "/home/array/Documents/cookie2.data"
 
@@ -64,8 +65,7 @@ if args.start:
     driver.find_element_by_xpath("""//*[@id="yDmH0d"]/div[3]/div/div[2]/div[3]/div/span/span""").click()
     sleep(2)
     driver.find_element_by_xpath("""//*[@id="yDmH0d"]/c-wiz/div/div/div[5]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span""").click()
-
-
-    
-    
-
+    sleep(class_time)
+    driver.find_element_by_xpath("""//*[@id="ow3"]/div[1]/div/div[5]/div[3]/div[9]/div[2]/div[2]/div""").click()
+    sleep(2)
+    driver.close()
