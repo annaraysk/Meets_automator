@@ -12,9 +12,11 @@ For now, you do that work.
 * list : lists the class links.
 * saveCookie : Saves the cookie file locally in your Documents, these cookies are used to login next time in class, make sure you use this option to save cookies so that starting class doesnt end up in cookie file missing error.
 * start : Starts class, check Usage part, start is provided with index of class, index is 0 based and starts the class whose index you provide.
+* auto : Automates 4 classes based on time and time table. Wait for its implementation.
+* timetable : Prints present timetable, update links_file tt list to update timetable.
 
 ## Usage 
-python3 script.py [-h] [-s START] [-l] [--saveCookie]
+python3 script.py [-h] [-s START] [-l] [--saveCookie] [-a] [-t]
 
 Use that h flag to open help and follow instructions.
 
