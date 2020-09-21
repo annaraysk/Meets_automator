@@ -12,7 +12,7 @@ import datetime
 
 #my important variables
 class_time = 50*60
-end_class_before_how_many_seconds_of_next_class = 600
+end_class_before_how_many_seconds_of_next_class = 0
 cookie_file1 = "/home/array/Documents/cookie1.data"
 cookie_file2 = "/home/array/Documents/cookie2.data"
 week_days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -26,7 +26,7 @@ parser.add_argument("-a","--auto",help="Automates all 4 classes, based on day an
 parser.add_argument("-t","--timetable", help="Shows timetable", action="store_true")
 
 def attend_class(class_link):
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome()
     driver.get("https://accounts.google.com/login")
     cookies = pickle.load(open(cookie_file1,"rb"))
     for i in cookies:
@@ -100,7 +100,7 @@ if args.auto:
         if present_day not in [0,1,2,3,4]:
             print("\n\nNot a good day to attend classes.\n")
             break
-        if (present_time.hour < 9 or present_time > 12) :
+        if (present_time.hour < 9 or present_time.hour > 12) :
             print("\n\nNo classes to attend now.\n")
             break
         index_of_class = tt[present_day][present_time.hour - 9]
