@@ -9,12 +9,13 @@ from links_file import tt
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 import datetime
+from selenium.webdriver.common.keys import Keys
 
 #my important variables
 class_time = 50*60
 end_class_before_how_many_seconds_of_next_class = 0
-cookie_file1 = "/home/array/Documents/cookie1.data"
-cookie_file2 = "/home/array/Documents/cookie2.data"
+cookie_file1 = "cookie1.data"
+profile_path_file = "pf.txt" 
 week_days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
 
 parser = argparse.ArgumentParser(description="Meets automator Script\n"+str(subject_list)+"\nMake sure you use right index to start class.", formatter_class=argparse.RawTextHelpFormatter)
@@ -26,7 +27,12 @@ parser.add_argument("-a","--auto",help="Automates all 4 classes, based on day an
 parser.add_argument("-t","--timetable", help="Shows timetable", action="store_true")
 
 def attend_class(class_link):
-    driver = webdriver.Chrome()
+    pfile = open(profile_path_file,"r")
+    profile = pfile.read()
+    opti = webdriver.ChromeOptions() 
+    opti.add_argument("user-data-dir="+profile)
+    print(profile)
+    driver = webdriver.Chrome(options=opti)
     driver.get("https://accounts.google.com/login")
     cookies = pickle.load(open(cookie_file1,"rb"))
     for i in cookies:
@@ -34,12 +40,9 @@ def attend_class(class_link):
             i['expiry'] = int(i['expiry'])
         driver.add_cookie(i)
     driver.get(class_link)
-    cookies = pickle.load(open(cookie_file2,"rb"))
-    for i in cookies:
-        driver.add_cookie(i)
-    sleep(2)
-    driver.find_element_by_xpath("""//*[@id="yDmH0d"]/div[3]/div/div[2]/div[3]/div/span/span""").click()
-    sleep(2)
+    driver.find_element_by_xpath("//body").send_keys(Keys.CONTROL,'d')
+    driver.find_element_by_xpath("//body").send_keys(Keys.CONTROL,'e')
+    sleep(5)
     driver.find_element_by_xpath("""//*[@id="yDmH0d"]/c-wiz/div/div/div[5]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span""").click()
     delta = datetime.timedelta(hours=1)
     now = datetime.datetime.now()
@@ -62,20 +65,19 @@ if args.links:
     print(tabulate(list_of_links,["Subject","Link"],"fancy_grid"))
 
 if args.saveCookie:
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome()
     driver.get("https://accounts.google.com/login")
     input("Sign in and press enter")
     pickle.dump( driver.get_cookies() , open(cookie_file1,"wb"))
-    driver.get(dictionary_of_links[subject_list[0]])
-    sleep(2)
-    try:
-        driver.find_element_by_xpath("""//*[@id="yDmH0d"]/div[3]/div/div[2]/div[3]/div/span/span""").click()
-        input("Disable Camera and Microphone.")
-    except:
-        pass
-    pickle.dump( driver.get_cookies() , open(cookie_file2,"wb"))
     print("Cookie file saved.")
     driver.close()
+    print("\nWe need a chrome profile \n(that has permissions)\n i cannot get it on my own\nFollow my instructions and provide me that\n\nGo to Chrome\ntype 'chrome://version' in search without quotes")
+    print("Search for Profile path and copy that path and paste here")
+    pf = str(input("Path:> ")).replace('Default','')
+    pfile = open(profile_path_file,"w")
+    pfile.write(pf)
+    pfile.close()
+    print("\nThis profile will be loaded while attending class.\n")
 
 if args.start:
     try:
@@ -104,6 +106,7 @@ if args.auto:
             print("\n\nNo classes to attend now.\n")
             break
         index_of_class = tt[present_day][present_time.hour - 9]
+        print("Attending "+subject_list[index_of_class]+" class.")
         class_to_attend = dictionary_of_links[subject_list[index_of_class]]
         attend_class(class_to_attend)
         sleep(end_class_before_how_many_seconds_of_next_class + 300)
