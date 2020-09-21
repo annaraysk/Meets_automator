@@ -3,9 +3,15 @@ Automator in work
 
 Automates the class attending process. Auto feature is now available, the script now can attend class based on present time and time table.
 
-It will use New profile for each webdriver instance, So permissions for Webcam and Microphone are not permitted, Might well add Profiles in future commits, which will allow these permissions and modify script to disable microphone and webcam.
+Profile is now implemented, the script uses your default profile, saveCookie does that part. Make sure all your chrome instances are closed, since it will be using default profile.
 
-For now, you do that work.
+It means now when the Chrome is opened to attend class, it will have microphone and camera permissions. No worries, script will now try to disable microphone and camera (Dont do that yourself, then script might enable it).
+
+Do a `git pull origin master` before running script to update scripts if any minor changes are made.  
+
+#### Windows Users
+As far as i know, if python and requirements are correctly installed. this can do the work. Let me know if there are bugs not known to me. 
+
 
 ## Features
 * help : provides you with help in using script.
