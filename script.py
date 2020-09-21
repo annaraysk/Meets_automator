@@ -40,7 +40,9 @@ def attend_class(class_link):
             i['expiry'] = int(i['expiry'])
         driver.add_cookie(i)
     driver.get(class_link)
+    sleep(2)
     driver.find_element_by_xpath("//body").send_keys(Keys.CONTROL,'d')
+    sleep(1)
     driver.find_element_by_xpath("//body").send_keys(Keys.CONTROL,'e')
     sleep(5)
     driver.find_element_by_xpath("""//*[@id="yDmH0d"]/c-wiz/div/div/div[5]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span""").click()
@@ -80,11 +82,11 @@ if args.saveCookie:
     print("\nThis profile will be loaded while attending class.\n")
 
 if args.start:
-    try:
-        class_link=dictionary_of_links[subject_list[int(args.start)]]
-        attend_class(class_link)
-    except:
+    if int(args.start)>6:
         print("Choose right index.")
+        quit()
+    class_link=dictionary_of_links[subject_list[int(args.start)]]
+    attend_class(class_link)
 
 if args.timetable:
     ttlist = []
