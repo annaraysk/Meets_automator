@@ -14,6 +14,7 @@ from selenium.webdriver.common.keys import Keys
 #my important variables
 class_time = 50*60
 end_class_before_how_many_seconds_of_next_class = 0
+seconds_late_to_class = 300
 cookie_file1 = "cookie1.data"
 profile_path_file = "pf.txt" 
 week_days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
@@ -25,6 +26,7 @@ parser.add_argument("-l","--links", help="Show Links.", action="store_true")
 parser.add_argument("--saveCookie", help="saves cookie to local file, make sure you have a cookie file to prevent login issues for class.",action="store_true")
 parser.add_argument("-a","--auto",help="Automates all 4 classes, based on day and timetable.",action="store_true")
 parser.add_argument("-t","--timetable", help="Shows timetable", action="store_true")
+parser.add_argument("-w","--wait",help="wait for classes to begin, instead of Ending script.",action="store_true")
 
 def attend_class(class_link):
     pfile = open(profile_path_file,"r")
@@ -52,7 +54,9 @@ def attend_class(class_link):
     class_time = (next_hour - now).seconds - end_class_before_how_many_seconds_of_next_class
     if class_time<0:
         class_time=1  
-    sleep(class_time)
+    for i in range(class_time,-1,-1):
+        print("Class ends in",i,"sec",end='\r')
+        sleep(1)
     driver.find_element_by_xpath("""//*[@id="ow3"]/div[1]/div/div[5]/div[3]/div[9]/div[2]/div[2]/div""").click()
     sleep(2)
     driver.close()
@@ -104,6 +108,18 @@ if args.auto:
         if present_day not in [0,1,2,3,4]:
             print("\n\nNot a good day to attend classes.\n")
             break
+        if args.wait :
+            if (present_time.hour < 7):
+                print("\n\nWait time is more than an hour, better come at 8")
+            elif (present_time.hour ==8):
+                delta = datetime.timedelta(hours=1)
+                now = datetime.datetime.now()
+                next_hour = (now + delta).replace(microsecond=0, second=0, minute=2)
+                class_time = (next_hour - now).seconds 
+                for i in range(class_time,-1,-1):
+                    print("Attending classes in",i,"sec",end="\r")
+                    sleep(1)
+        present_time = datetime.datetime.now()
         if (present_time.hour < 9 or present_time.hour > 12) :
             print("\n\nNo classes to attend now.\n")
             break
@@ -111,4 +127,9 @@ if args.auto:
         print("Attending "+subject_list[index_of_class]+" class.")
         class_to_attend = dictionary_of_links[subject_list[index_of_class]]
         attend_class(class_to_attend)
-        sleep(end_class_before_how_many_seconds_of_next_class + 300)
+        next_class_in = end_class_before_how_many_seconds_of_next_class + seconds_late_to_class
+        print("\n\n")
+        for i in range(next_class_in,-1,-1):
+            print("Attending next class in",i,"sec",end='\r')
+            sleep(1)
+        
