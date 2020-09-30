@@ -7,11 +7,13 @@ Profile is now implemented, the script uses your default profile, saveCookie doe
 
 It means now when the Chrome is opened to attend class, it will have microphone and camera permissions. No worries, script will now try to disable microphone and camera (Dont do that yourself, then script might enable it).
 
-Do a `git pull origin master` before running script to update scripts if any minor changes are made.  
+Do a `git pull origin master` before running script to update scripts if any minor changes are made.
 
 #### Windows Users
 As far as i know, if python and requirements are correctly installed. this can do the work. Let me know if there are bugs not known to me. 
 
+#### Latest update
+Added wait and Timer indicator (looks cool)
 
 ## Features
 * help : provides you with help in using script.
@@ -20,16 +22,19 @@ As far as i know, if python and requirements are correctly installed. this can d
 * start : Starts class, check Usage part, start is provided with index of class, index is 0 based and starts the class whose index you provide.
 * auto : Automates 4 classes based on time and time table. The script exits when there are no classes to attend.
 * timetable : Prints present timetable, update links_file tt list to update timetable.
+* wait : Waits for classes to start, even if you start script before 9, Anytime before an hour will wait.
 
 ## Usage 
-python3 script.py [-h] [-s START] [-l] [--saveCookie] [-a] [-t]
+python3 script.py [-h] [-s START] [-l] [--saveCookie] [-a] [-t] [-w]
 
 Use that h flag to open help and follow instructions.
 
 ## Installation
 1. Clone the repository
 2. Python3 installed and environments set.
-3. Chrome installed.
+Refer documents of python.org for how to install python and set environment variables (Windows) and set path (Linux)
+3. Chrome installed (use latest version if possible).
+If chrome is not Updated or face any issues, then `ChromeDriverManager().install()` should be added to `webdriver.Chrome()` wherever is there, this will install and use compatible driver for present Chrome version.
 4. Install all requirements
    `python3 -m pip install -r requirements.txt`
 5. Start with help bitches!!
