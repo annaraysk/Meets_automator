@@ -34,7 +34,7 @@ def wait1(hr,minu):
     wait_minute=0
     if now.hour!=hr:
         wait_minute += (60-now.minute)
-    wait_minute+=minu
+    wait_minute+=(minu-now.minute)
     for i in range(wait_minute,0,-1):
         print("[+] waiting for",i,"minute",end='\r')
         sleep(60)
@@ -153,6 +153,9 @@ if args.auto:
             if present_time.minute>20:
                 index_of_tt = 2
                 end_time = [12,20]
+            elif present_time.minute<10:
+                index_of_tt = 1
+                end_time = [11,10]
             else:
                 wait1(11,20)
                 continue
@@ -160,6 +163,9 @@ if args.auto:
             if  present_time.minute>30:
                 index_of_tt = 3
                 end_time = [13,30]
+            elif present_time.minute<20:
+                index_of_tt = 2
+                end_time = [12,20]
             else:
                 wait1(12,30)
                 continue
